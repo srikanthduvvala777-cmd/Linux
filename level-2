@@ -1,0 +1,52 @@
+1.Automate backups with Cron
+
+
+#!/bin/bash
+
+SOURCE=/opt/devproject
+
+BACKUP=/backup/devproject_$(date +%F).tar.gz
+
+sudo tar -czvf $BACKUP $SOURCE
+
+echo "Backup stored at $BACKUP"
+
+
+2.Create shell scripts: Log cleanup, service restart, health checks
+
+
+#!/bin/bash
+
+find /var/log -type f -mtime +7 -exec rm -f {} \;
+
+echo "Old logs cleared"
+
+
+ 3.Manage logs under /var/log
+
+#!/bin/bash
+
+SERVICES="nginx ssh"
+
+for svc in $SERVICES; do
+
+    sudo systemctl is-active --quiet $svc && \
+
+    echo "$svc is running" || \
+
+    echo "$svc is down"
+
+done
+
+4.Monitor system performance and troubleshoot services
+
+
+#!/bin/bash
+
+echo "---CPU Load---"; top -b -n1 | head -5
+
+echo "---Disk Space---"; df -h
+
+echo "---Memory---"; free -h
+
+
